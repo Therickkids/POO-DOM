@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clases de Usuario</title>
+</head>
+<body>
+
+    <h1>Usuarios de la Empresa</h1>
+
+    <!-- Botones para mostrar los mensajes -->
+    <button id="adminBtn">Mostrar Administrador</button>
+    <button id="comercialBtn">Mostrar Comercial</button>
+
+    <!-- Párrafo donde se mostrará el mensaje -->
+    <p id="mensaje"></p>
+
+    <script>
+        // Clase padre Usuario
+        class Usuario {
+            constructor(nombre, edad) {
+                this.nombre = nombre;
+                this.edad = edad;
+            }
+        }
+
+        // Clase hija Administrador
+        class Administrador extends Usuario {
+            mostrarRol() {
+                const mensaje = `Nombre: ${this.nombre}, Edad: ${this.edad}, Rol: Administrador`;
+                document.getElementById("mensaje").innerText = mensaje;
+            }
+        }
+
+        // Clase hija Comercial
+        class Comercial extends Usuario {
+            mostrarRol() {
+                const mensaje = `Nombre: ${this.nombre}, Edad: ${this.edad}, Rol: Comercial`;
+                document.getElementById("mensaje").innerText = mensaje;
+            }
+        }
+
+        // Instancias de las clases
+        const admin = new Administrador('Julian', 35);
+        const comercial = new Comercial('Evelyn', 28);
+
+        // Asignar eventos a los botones
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            admin.mostrarRol();
+        });
+
+        document.getElementById('comercialBtn').addEventListener('click', () => {
+            comercial.mostrarRol();
+        });
+    </script>
+
+</body>
+</html>

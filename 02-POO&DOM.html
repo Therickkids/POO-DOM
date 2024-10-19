@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+</head>
+<body>
+
+    <h1>Lista de Tareas</h1>
+
+    <!-- Campo de texto y botón para agregar una tarea -->
+    <input type="text" id="tareaInput" placeholder="Escribe una tarea">
+    <button id="agregarBtn">Agregar Tarea</button>
+
+    <!-- Lista donde se mostrarán las tareas -->
+    <ul id="listaTareas"></ul>
+
+    <script>
+        // Clase ListaTareas
+        class ListaTareas {
+            constructor() {
+                this.idTarea = 0;  // Identificador único para cada tarea
+            }
+
+            // Método para agregar una tarea a la lista
+            agregarTarea(tarea) {
+                if (tarea.trim() === "") return;  // No agregar tareas vacías
+
+                // Crear un nuevo elemento <li>
+                const nuevaTarea = document.createElement('li');
+                this.idTarea++;  // Incrementar el id único
+                nuevaTarea.id = `tarea-${this.idTarea}`;
+                nuevaTarea.innerText = tarea;
+
+                // Agregar la tarea al <ul> en el DOM
+                document.getElementById('listaTareas').appendChild(nuevaTarea);
+            }
+        }
+
+        // Crear una instancia de la clase ListaTareas
+        const lista = new ListaTareas();
+
+        // Asignar el evento al botón para agregar tareas
+        document.getElementById('agregarBtn').addEventListener('click', () => {
+            const tarea = document.getElementById('tareaInput').value;
+            lista.agregarTarea(tarea);
+
+            // Limpiar el campo de texto
+            document.getElementById('tareaInput').value = '';
+        });
+    </script>
+
+</body>
+</html>

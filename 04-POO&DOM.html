@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Tareas</title>
+</head>
+<body>
+
+    <h1>Administrador de Tareas</h1>
+
+    <!-- Campos para agregar una nueva tarea -->
+    <input type="text" id="nombreTarea" placeholder="Nombre de la tarea">
+    <input type="text" id="asignadoA" placeholder="Asignado a">
+    <button id="agregarBtn">Agregar Tarea</button>
+
+    <!-- Lista donde se mostrarán las tareas -->
+    <ul id="listaTareas"></ul>
+
+    <script>
+        // Clase AdministradorDeTareas
+        class AdministradorDeTareas {
+            constructor() {
+                this.idTarea = 0; // Contador para asignar IDs únicos
+                this.tareas = [];  // Array para almacenar las tareas
+            }
+
+            // Método para agregar una tarea
+            agregarTarea(nombre, asignadoA) {
+                this.idTarea++;  // Incrementar ID único para la tarea
+                const tarea = { id: this.idTarea, nombre, asignadoA };
+                this.tareas.push(tarea);  // Agregar tarea al array
+
+                this.mostrarTareaEnDOM(tarea);  // Mostrar la tarea en el DOM
+            }
+
+            // Método para mostrar una tarea en el DOM
+            mostrarTareaEnDOM(tarea) {
+                // Crear un nuevo <li>
+                const tareaElement = document.createElement('li');
+                tareaElement.id = `tarea-${tarea.id}`;
+                tareaElement.innerHTML = `
+                    <span><strong>Tarea:</strong> ${tarea.nombre}</span> 
+                    <span><strong>Asignado a:</strong> ${tarea.asignadoA}</span>
+                    <button class="editarBtn">Editar</button>
+                    <button class="eliminarBtn">Eliminar</button>
+                `;
+
+                // Agregar eventos a los botones
+                tareaElement.querySelector('.editarBtn').addEventListener('click', () => this.editarTarea(tarea.id));
+                tareaElement.querySelector('.eliminarBtn').addEventListener('click', () => this.eliminarTarea(tarea.id));
+
+                // Agregar el <li> al DOM
+                document.getElementById('listaTareas').appendChild(tareaElement);
+            }
+
+            // Método para editar una tarea
+            editarTarea(id) {
+                // Buscar la tarea en el array
+                const tarea = this.tareas.find(t => t.id === id);
+                if (tarea) {
+                    // Pedir nuevos datos al usuario
+                    const nuevoNombre = prompt('Nuevo nombre de la tarea:', tarea.nombre);
+                    const nuevoAsignadoA = prompt('Nuevo asignado a:', tarea.asignadoA);
+
+                    // Actualizar tarea
+                    tarea.nombre = nuevoNombre;
+                    tarea.asignadoA = nuevoAsignadoA;
+
+                    // Actualizar el DOM
+                    const tareaElement = document.getElementById(`tarea-${id}`);
+                    tareaElement.querySelector('span:first-child').innerHTML = `<strong>Tarea:</strong> ${tarea.nombre}`;
+                    tareaElement.querySelector('span:nth-child(2)').innerHTML = `<strong>Asignado a:</strong> ${tarea.asignadoA}`;
+                }
+            }
+
+            // Método para eliminar una tarea
+            eliminarTarea(id) {
+                // Eliminar del array
+                this.tareas = this.tareas.filter(t => t.id !== id);
+
+                // Eliminar del DOM
+                const tareaElement = document.getElementById(`tarea-${id}`);
+                tareaElement.remove();
+            }
+        }
+
+        // Crear una instancia de la clase AdministradorDeTareas
+        const administrador = new AdministradorDeTareas();
+
+        // Agregar evento al botón para agregar tareas
+        document.getElementById('agregarBtn').addEventListener('click', () => {
+            const nombreTarea = document.getElementById('nombreTarea').value;
+            const asignadoA = document.getElementById('asignadoA').value;
+
+            if (nombreTarea.trim() && asignadoA.trim()) {
+                administrador.agregarTarea(nombreTarea, asignadoA);
+
+                // Limpiar los campos de texto
+                document.getElementById('nombreTarea').value = '';
+                document.getElementById('asignadoA').value = '';
+            }
+        });
+    </script>
+
+</body>
+</html>

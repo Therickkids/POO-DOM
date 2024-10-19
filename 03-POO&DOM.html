@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar Color de Fondo</title>
+</head>
+<body>
+
+    <h1>Cambiar el Color de Fondo del Párrafo</h1>
+
+    <!-- Párrafo cuyo fondo se cambiará -->
+    <p id="parrafo">Este es un párrafo al que le cambiaremos el color de fondo.</p>
+
+    <!-- Botón para cambiar el color -->
+    <button id="cambiarColorBtn">Cambiar Color</button>
+
+    <script>
+        // Clase Elemento
+        class Elemento {
+            constructor(elementoId) {
+                this.elemento = document.getElementById(elementoId);
+            }
+
+            // Método para cambiar el color de fondo
+            cambiarColor(color) {
+                this.elemento.style.backgroundColor = color;
+            }
+        }
+
+        // Subclase Boton
+        class Boton extends Elemento {  //El EXTENDS se usa para expresar que una clase hereda de otra clase
+            constructor(elementoId, botonId) {
+                super(elementoId);  // Llamada al constructor de la clase padre
+                this.boton = document.getElementById(botonId);
+            }
+
+            // Método para añadir un evento al botón
+            agregarEventoColor(color) {
+                this.boton.addEventListener('click', () => {
+                    this.cambiarColor(color);  // Cambiar color del párrafo
+                });
+            }
+        }
+
+        // Crear una instancia de la subclase Boton
+        const botonColor = new Boton('parrafo', 'cambiarColorBtn');
+
+        // Asignar evento para cambiar el color a azul
+        botonColor.agregarEventoColor('lightblue');
+    </script>
+
+</body>
+</html>

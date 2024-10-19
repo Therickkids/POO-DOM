@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de Video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #tituloContainer {
+            display: flex;
+            justify-content: center;  /* Centra horizontalmente */
+            align-items: center;      /* Centra verticalmente */
+            background-color: #ffffff; /* Color de fondo opcional */
+        }
+
+        #reproductorContainer {
+            background-color: #fff;
+            border: 2px solid #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%; /* Ajusta el ancho del contenedor */
+            max-width: 500px; /* Ancho máximo del contenedor */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el contenido horizontalmente */
+        }
+
+        #video {
+            width: 100%; /* Ajusta el ancho del video */
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%; /* Asegura que los controles ocupen todo el ancho del contenedor */
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .theme-light {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .theme-dark {
+            background-color: #333;
+            color: #000000;
+        }
+
+        #reproductorContainer.theme-dark {
+            background-color: #222;
+            border-color: #555;
+        }
+
+        .controls button.theme-toggle {
+            background-color: #6c757d;
+        }
+
+        .controls button.theme-toggle:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div id="reproductorContainer" class="theme-light">
+        <div id="tituloContainer">
+            <h2 id="videoTitulo">MI REPRODUCTOR DE VIDEO</h2>
+        </div>
+        <video id="video" poster="https://th.bing.com/th/id/OIP.xIyXb1n4PkgzE-fQqjuDhwHaHa?rs=1&pid=ImgDetMain">
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            Tu navegador no soporta el formato de video.
+        </video>
+        <div class="controls">
+            <button id="playPauseBtn">Play</button>
+            <button id="muteBtn">Mute</button>
+            <button id="themeToggleBtn" class="theme-toggle">Cambiar Tema</button>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    // Clase Base para el reproductor
+    class Reproductor {
+        constructor(videoId) {
+            this.video = document.getElementById(videoId);
+        }
+
+        // Método para reproducir/pausar el video
+        togglePlay() {
+            if (this.video.paused) {
+                this.video.play();
+            } else {
+                this.video.pause();
+            }
+        }
+
+        // Método para mutear/desmutear el video
+        toggleMute() {
+            this.video.muted = !this.video.muted;
+        }
+    }
+
+    // Clase que extiende Reproductor para manipular los controles
+    class ReproductorConControles extends Reproductor {
+        constructor(videoId, playPauseBtnId, muteBtnId, themeToggleBtnId, containerId) {
+            super(videoId);
+            this.playPauseBtn = document.getElementById(playPauseBtnId);
+            this.muteBtn = document.getElementById(muteBtnId);
+            this.themeToggleBtn = document.getElementById(themeToggleBtnId);
+            this.container = document.getElementById(containerId);
+            this.isDarkTheme = false;
+
+            // Asignar eventos a los botones
+            this.playPauseBtn.addEventListener('click', () => this.controlPlayPause());
+            this.muteBtn.addEventListener('click', () => this.controlMute());
+            this.themeToggleBtn.addEventListener('click', () => this.toggleTheme());
+        }
+
+        // Método para controlar el botón de play/pausa
+        controlPlayPause() {
+            this.togglePlay();
+            this.playPauseBtn.innerText = this.video.paused ? 'Play' : 'Pause';
+        }
+
+        // Método para controlar el botón de mute/desmute
+        controlMute() {
+            this.toggleMute();
+            this.muteBtn.innerText = this.video.muted ? 'Unmute' : 'Mute';
+        }
+
+        // Método para cambiar el tema claro/oscuro
+        toggleTheme() {
+            this.isDarkTheme = !this.isDarkTheme;
+            if (this.isDarkTheme) {
+                this.container.classList.remove('theme-light');
+                this.container.classList.add('theme-dark');
+            } else {
+                this.container.classList.remove('theme-dark');
+                this.container.classList.add('theme-light');
+            }
+        }
+    }
+
+    // Crear una instancia del reproductor con controles
+    const reproductor = new ReproductorConControles('video', 'playPauseBtn', 'muteBtn', 'themeToggleBtn', 'reproductorContainer');
+</script>
+
+</body>
+</html>
